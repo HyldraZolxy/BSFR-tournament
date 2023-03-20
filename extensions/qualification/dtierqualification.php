@@ -29,6 +29,8 @@ class DTierQualification {
         $allMaps = json_decode($this->_api->getMaps($this->poolID), true);
         $allUsers = json_decode($this->_api->getUser(), true);
 
+        usleep(25);
+
         $leaderboardAccuracy = [];
         $leaderboardMidspeed = [];
         $leaderboardTechnical = [];
@@ -279,7 +281,6 @@ class DTierQualification {
             $leaderboardHTMLOverall .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
-            $leaderboardHTMLOverall .= "<td class=\"leaderboardWeightedAccuracy\"></td>";
             $leaderboardHTMLOverall .= "</tr>";
         }
 

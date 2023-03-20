@@ -12,7 +12,7 @@ class Api {
     private DBFactory $_dbFactory;
     private SQLQuery $_sqlQuery;
     private Tools $_tools;
-    private $poolID = "1";
+    private $poolID = 1;
 
     public function __construct() {
         $this->_dbFactory = new DBFactory();
