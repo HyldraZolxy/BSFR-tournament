@@ -18,7 +18,7 @@ $GLOBALS["rolesAuthorized"] = array(
     "938517625263251528"  // Candidate
 );
 
-$GLOBAL["accuracy"]     = array("True ACC",     "Standard ACC",      "High ACC");
-$GLOBAL["midspeed"]     = array("Low Midspeed", "Standard Midspeed", "High Midspeed");
-$GLOBAL["technical"]    = array("Low Tech",     "Standard Tech",     "High Tech");
-$GLOBAL["speed"]        = array("Low Speed",    "Standard Speed",    "High Speed");
+$GLOBALS["accuracy"]     = array("True ACC",     "Standard ACC",      "High ACC");
+$GLOBALS["midspeed"]     = array("Low Midspeed", "Standard Midspeed", "High Midspeed");
+$GLOBALS["technical"]    = array("Low Tech",     "Standard Tech",     "High Tech");
+$GLOBALS["speed"]        = array("Low Speed",    "Standard Speed",    "High Speed");

@@ -20,7 +20,7 @@ class Api {
         $this->_tools = new Tools();
     }
 
-    private function getUser(): false|string {
+    public function getUser(): false|string {
         $fields = array("*");
 
         $this->_sqlQuery->sqlSelect($fields, "users");
@@ -28,7 +28,7 @@ class Api {
 
         return json_encode($result);
     }
-    private function getMaps(int $poolID): false|string {
+    public function getMaps(int $poolID): false|string {
         $fields = array("*");
 
         if (!empty($poolID)) {
@@ -66,6 +66,15 @@ class Api {
         $result = $this->_sqlQuery->sqlFetch();
 
         return $result;
+    }
+    public function getAllScore(int $poolID): bool|array {
+        $fields = array("*");
+        $where = array(
+            "poolID" => $poolID
+        );
+
+        $this->_sqlQuery->sqlSelect($fields, "scores", $where);
+        return $this->_sqlQuery->sqlFetchAll();
     }
 
     private function setScores($data): string {
@@ -122,7 +131,8 @@ class Api {
                 "accuracy" => $playerPerformance["accuracy"],
                 "miss" => $playerPerformance["miss"],
                 "pause" => $playerPerformance["paused"],
-                "try" => 1
+                "try" => 1,
+                "poolID" => $this->poolID
             );
             $this->_sqlQuery->sqlAdd($PlayerScore, "scores");
 
