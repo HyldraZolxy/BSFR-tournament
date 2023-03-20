@@ -181,7 +181,7 @@ class DTierQualification {
             $leaderboardHTMLAccuracy .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
-            $leaderboardHTMLAccuracy .= "<td class=\"leaderboardWeightedAccuracy\"></td>";
+            $leaderboardHTMLAccuracy .= "<td class=\"leaderboardWeightedAccuracy\">" . count($mapsIDValues) - 1 . "</td>";
             $leaderboardHTMLAccuracy .= "</tr>";
         }
 
@@ -206,7 +206,7 @@ class DTierQualification {
             $leaderboardHTMLMidspeed .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
-            $leaderboardHTMLMidspeed .= "<td class=\"leaderboardWeightedAccuracy\"></td>";
+            $leaderboardHTMLMidspeed .= "<td class=\"leaderboardWeightedAccuracy\">" . count($mapsIDValues) - 1 . "</td>";
             $leaderboardHTMLMidspeed .= "</tr>";
         }
 
@@ -231,7 +231,7 @@ class DTierQualification {
             $leaderboardHTMLTechnical .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
-            $leaderboardHTMLTechnical .= "<td class=\"leaderboardWeightedAccuracy\"></td>";
+            $leaderboardHTMLTechnical .= "<td class=\"leaderboardWeightedAccuracy\">" . count($mapsIDValues) - 1 . "</td>";
             $leaderboardHTMLTechnical .= "</tr>";
         }
 
@@ -256,7 +256,7 @@ class DTierQualification {
             $leaderboardHTMLSpeed .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
-            $leaderboardHTMLSpeed .= "<td class=\"leaderboardWeightedAccuracy\"></td>";
+            $leaderboardHTMLSpeed .= "<td class=\"leaderboardWeightedAccuracy\">" . count($mapsIDValues) - 1 . "</td>";
             $leaderboardHTMLSpeed .= "</tr>";
         }
 
@@ -281,6 +281,7 @@ class DTierQualification {
             $leaderboardHTMLOverall .= "<td class=\"leaderboardAccuracy\">
                 " . number_format($mapsIDValues["accuracyGlobal"], 2) . "%
             </td>";
+            $leaderboardHTMLOverall .= "<td class=\"leaderboardWeightedAccuracy\">" . count($mapsIDValues) - 1 . "</td>";
             $leaderboardHTMLOverall .= "</tr>";
         }
 
