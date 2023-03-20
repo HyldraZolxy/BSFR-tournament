@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Koulen&family=Oswald:wght@700&family=Roboto+Flex:wght@100&display=swap');
+
+.discord, .discord a {
+    padding-left: 40px;
+
+    background: #5865F2 url("../pictures/discord-mark-white.svg") no-repeat 10px center;
+    background-size: 13%;
+    border: solid rgba(255, 255, 255, 0.05) 1px;
+    border-radius: 5px;
+
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    color: #e8e8e8;
+}
+.discord:hover, .discord a:hover {
+    color: #ffffff;
+}
+
+.loginRequired {
+    color: #ff6c6c;
+}
+.player {
+    max-width: 200px;
+
+    display: inline-flex;
+
+    line-height: 70px;
+}
+.player img {
+    height: 40px;
+    margin-top: 14px;
+
+    position: absolute;
+
+    border-radius: 50%;
+    border: solid 2px rgba(3, 222, 135, 0.5);
+}
+.player p {
+    margin-left: 50px;
+    float: left;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    min-width: 100vw;
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    background: linear-gradient(180deg, #788cbf, #d7547b);
+    background-size: 200vw 200vh;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    color: #e7e7e7;
+}
+.bodyBackgroundImage {
+    width: 200vw;
+    height: 200vh;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+
+    position: fixed;
+
+    background: transparent url('../pictures/noise-transparent.png') repeat 0 0;
+    animation: bodyBackgroundImage-animation .2s infinite;
+
+    opacity: 0.5;
+    visibility: visible;
+
+    z-index: -1;
+}
+
+header {
+    width: 100vw;
+    height: 70px;
+
+    background-color: rgba(0, 0, 0, 0.45);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+header .logo {
+    font-size: 1.5em;
+    line-height: 70px;
+}
+
+.logo {
+    margin-left: 20px;
+    float: left;
+
+    font-family: "Koulen", Helvetica, Arial, serif;
+    text-shadow: 1px 1px 0 rgb(84 84 84);
+}
+.logo span {
+    position: absolute;
+}
+.logo span:first-child {
+    z-index: 1;
+}
+.logo span:last-child {
+    margin: 13px 10px 0 20px;
+
+    line-height: 57px;
+
+    background: linear-gradient(90deg, #4a7dff, #e9efff, #ff4c4c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: 1px 1px 0 rgba(84, 84, 84, 0.6);
+}
+
+nav {
+    right: 0;
+    margin-right: 15px;
+
+    position: absolute;
+    float: right;
+
+    line-height: 70px;
+}
+nav a {
+    padding: 10px 15px;
+
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+nav a:hover {
+    color: #bbd6f5;
+}
+nav li {
+    display: inline-block;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+}
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.dropbtn {
+    padding: 10px 15px;
+
+    background-color: transparent;
+    border: none;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    font-size: 1em;
+    color: white;
+
+    cursor: pointer;
+}
+.dropbtn:hover {
+    color: #bbd6f5;
+}
+.dropdown-content {
+    margin-top: -1px;
+    min-width: 160px;
+
+    display: none;
+    position: absolute;
+
+    background-color: rgba(0, 0, 0, 0.45);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+
+    z-index: 1;
+}
+.dropdown-content a {
+    padding: inherit;
+    display: block;
+
+    text-decoration: none;
+}
+
+main {
+    width: 100vw;
+    height: calc(100vh - 70px);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    color: #3d3d3d;
+}
+
+#navContent {
+    width: 96vw;
+    height: 50px;
+    margin-top: 15px;
+    margin-left: 2vw;
+
+    display: inline-flex;
+    justify-content: flex-start;
+
+    background-color: #eaeaea;
+
+    line-height: 50px;
+    font-size: 0.8em;
+}
+#navContent p {
+    padding: 0 10px;
+}
+#navContent a {
+    text-decoration: none;
+    color: #3d3d3d;
+}
+#navContent a:hover {
+    color: #656565;
+}
+
+#mainContent {
+    width: 96vw;
+    margin-top: 50px;
+    margin-left: 2vw;
+
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: #eaeaea;
+}
+
+#leaderboard {
+    width: 70%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#leaderboard section {
+    display: none;
+    padding: 20px 0 0;
+
+    border-top: 1px solid #ddd;
+}
+#leaderboard input {
+    display: none;
+}
+#leaderboard label {
+    margin: 0 0 -1px;
+    padding: 15px 25px;
+
+    display: inline-block;
+
+    border: 1px solid transparent;
+
+    font-weight: 600;
+    text-align: center;
+}
+#leaderboard label:before {
+    margin-right: 10px;
+
+    font-weight: normal;
+}
+#leaderboard label:hover {
+    color: #656565;
+    cursor: pointer;
+}
+#leaderboard input:checked + label {
+    color: #555;
+    border: 1px solid #ddd;
+    border-top: 2px solid orange;
+    border-bottom: 1px solid #fff;
+}
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4,
+#tab5:checked ~ #content5 {
+    display: block;
+}
+
+#leaderboard table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+.leaderboardPlayer tr {
+    width: 100%;
+
+    border-bottom: 1px solid #ddd;
+    line-height: 20px;
+}
+.leaderboardPlayer th:first-child {
+    width: 70px;
+}
+.leaderboardPlayer th:nth-child(2) {
+    text-align: left;
+}
+.leaderboardPlayer img {
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
+    margin-left: 5px;
+
+    border-radius: 50%;
+    border: solid 2px rgba(255, 165, 0, 0.5);
+}
+
+.leaderboardPlayer tr:nth-child(even) {
+    background-color: #e7e7e7;
+}
+.leaderboardPlayer tr:nth-child(odd) {
+    background-color: #dcdcdc;
+}
+.leaderboardPlayer tr:first-child {
+    background: none;
+}
+
+.leaderboardUsername {
+    max-width: 1px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.leaderboardAccuracy, .leaderboardWeightedAccuracy {
+    text-align: center;
+}
+
+@keyframes bodyBackgroundImage-animation {
+    0%   { transform: translate(   0,    0) }
+    10%  { transform: translate( -5%,  -5%) }
+    20%  { transform: translate(-10%,   5%) }
+    30%  { transform: translate(  5%, -10%) }
+    40%  { transform: translate( -5%,  15%) }
+    50%  { transform: translate(-10%,   5%) }
+    60%  { transform: translate( 15%,    0) }
+    70%  { transform: translate(   0,  10%) }
+    80%  { transform: translate(-15%,    0) }
+    90%  { transform: translate( 10%,   5%) }
+    100% { transform: translate(  5%,    0) }
+}

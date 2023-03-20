@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>BSWC x D-Tier team | Site web pour la team France</title>
+
+        <link rel="preload stylesheet" as="style" href="../css/global.style.css" type="text/css" />
+        <link rel="preload stylesheet" as="style" href="../css/ionicons.min.css" type="text/css" />
+    </head>
+    <body>
+        <div class="bodyBackgroundImage"></div>
+
+        <header>
+            <div class="logo">
+                <span>BSWC</span>
+                <span>D-Tier</span>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="/grabber">Score Grabber</a>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button type="submit" class="dropbtn">BSFR-Qualification</button>
+                            <div class="dropdown-content">
+                                <a href="/DTierQualification">Qualification</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        {{LOGIN_OR_LOGGED}}
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div id="navContent">
+                <p class="navContentLink ion-ios-home">
+                    <a href="/">Accueil</a> / {{MODULE_URI}}
+                </p>
+                <p class="loginRequired">{{LOGIN_REQUIRED}}</p>
+            </div>
+
+            <div id="mainContent">
+                {{CONTENT}}
+            </div>
+        </main>
+    </body>
+</html>

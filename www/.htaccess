@@ -1,0 +1,11 @@
+RewriteEngine On
+Options +FollowSymlinks
+Options -Indexes
+RewriteBase /
+
+#Modification de l'URL pour éviter l'erreur 404 et pour rediriger vers la bonne route
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
