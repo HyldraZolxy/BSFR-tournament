@@ -1,4 +1,5 @@
 import { Tools } from "./tools";
+import { mapsSong, playerPerformance } from "./BeatSaberDataManager";
 
 interface mapsJSON {
     id          : number;
@@ -39,6 +40,10 @@ interface dataGrabbed {
         paused          : number;
     };
 }
+interface dataJSON {
+    error : string;
+    success: string;
+}
 
 export class Data {
 
@@ -62,11 +67,33 @@ export class Data {
         this.getMaps(this.pool);
     }
 
-    public async sendData(data: dataGrabbed) {
+    public async sendData(data: dataGrabbed, mapInformation: mapsSong, playerPerformance: playerPerformance) {
         if (this.mapsHash.includes(data.hash.toUpperCase())) {
+            this.createMapsCard(mapInformation, playerPerformance);
+
             let dataJson = await this._tools.postMethod("/api/setScores", data);
 
             console.log(dataJson);
+
+            dataJson = JSON.parse(dataJson);
+
+            if (dataJson.error !== undefined) {
+                let elementMapCardLast = $(".mapContainer").last();
+                let elementMapStatusUpload = elementMapCardLast.find(".mapStatusUpload");
+
+                elementMapStatusUpload.removeClass("mapStatusUploadProgress mapStatusUploadNotOk mapStatusUploadOk");
+                elementMapStatusUpload.addClass("mapStatusUploadNotOk");
+                elementMapStatusUpload.text(dataJson.error);
+            }
+
+            if (dataJson.success !== undefined) {
+                let elementMapCardLast = $(".mapContainer").last();
+                let elementMapStatusUpload = elementMapCardLast.find(".mapStatusUpload");
+
+                elementMapStatusUpload.removeClass("mapStatusUploadProgress mapStatusUploadNotOk mapStatusUploadOk");
+                elementMapStatusUpload.addClass("mapStatusUploadOk");
+                elementMapStatusUpload.text(dataJson.success);
+            }
         }
     }
     private async getMaps(pool: number) {
@@ -75,6 +102,22 @@ export class Data {
         for (let i = 0; i < this.maps.length; i++) {
             this.mapsHash.push(this.maps[i].mapID.toUpperCase());
         }
+    }
+
+    private createMapsCard(mapInformation: mapsSong, playerPerformance: playerPerformance) {
+        let elementStatus = $("#mainContent");
+
+        elementStatus.append(   '<div class="mapContainer">' +
+                                    '<img class="mapCover" src="' + mapInformation.cover + '" alt="cover map" />' +
+                                    '<p class="mapTitle">' + mapInformation.title + '</p>' +
+                                    '<div class="mapPerformance">' +
+                                        '<p class="mapPerformanceScore">' + playerPerformance.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</p>' +
+                                        '<p class="mapPerformanceAccuracy">' + Number(Math.floor(playerPerformance.accuracy * 100).toFixed(2)) + '%</p>' +
+                                        '<p class="mapPerformanceMiss">' + playerPerformance.miss + '</p>' +
+                                        '<p class="mapPerformanceNotes">' + playerPerformance.notesPassed + '/' + mapInformation.totalNotes + '</p>' +
+                                    '</div>' +
+                                    '<p class="mapStatusUpload mapStatusUploadProgress">En cours de vérification</p>' +
+                                '</div>');
     }
 
     /////////////

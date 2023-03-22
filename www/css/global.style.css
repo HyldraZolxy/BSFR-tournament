@@ -188,8 +188,6 @@ main {
     display: flex;
     flex-direction: column;
 
-    overflow: hidden;
-
     color: #3d3d3d;
 }
 
@@ -325,6 +323,98 @@ main {
 }
 .leaderboardAccuracy, .leaderboardWeightedAccuracy {
     text-align: center;
+}
+
+#pluginStatus {
+    width: 100%;
+}
+
+.pluginStatusValue {
+    width: 150px;
+    margin: 10px;
+    line-height: 50px;
+
+    float: right;
+
+    border-radius: 5px;
+
+    text-align: center;
+}
+.pluginStatusDisconnected {
+    background-color: #ee4d4d;
+    border: 1px solid #8f4747;
+}
+.pluginStatusConnected {
+    background-color: #4deea6;
+    border: 1px solid #478f79;
+}
+
+.mapContainer {
+    width: 95%;
+    height: 80px;
+    margin: 10px;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    font-size: 1em;
+    color: white;
+
+    overflow: hidden;
+    z-index: 1;
+}
+.mapContainer img {
+    width: 91%;
+    height: 80px;
+
+    position: absolute;
+    display: block;
+    vertical-align: middle;
+
+    object-fit: cover;
+    object-position: center;
+
+    filter: blur(5px) brightness(0.5);
+
+    z-index: -1;
+}
+.mapTitle {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.mapPerformance {
+    width: 100%;
+
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.mapPerformanceScore:before {
+    content: "Score: ";
+}
+.mapPerformanceAccuracy:before {
+    content: "Accuracy: ";
+}
+.mapPerformanceMiss:before {
+    content: "Miss: ";
+}
+.mapPerformanceNotes:before {
+    content: "Notes: ";
+}
+.mapStatusUpload {
+    margin-top: 5px;
+    margin-left: 10px;
+
+    font-weight: bold;
+}
+.mapStatusUploadOk {
+    color: #21c221;
+}
+.mapStatusUploadProgress {
+    color: orange;
+}
+.mapStatusUploadNotOk {
+    color: #f17c7c;
 }
 
 @keyframes bodyBackgroundImage-animation {

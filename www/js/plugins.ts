@@ -39,11 +39,15 @@ export class Plugins {
             (data) => { this._httpSiraStatus.dataParser(data); },
             () => {
                 console.log("socket initialized on HttpSiraStatus!");
-                this.websocketStatus    = "CONNECTED";
+                this.websocketStatus = "CONNECTED";
+                $(".pluginStatusValue").text("Connected");
+                $(".pluginStatusValue").removeClass("pluginStatusDisconnected pluginStatusConnected").addClass("pluginStatusConnected");
             },
             () => {
                 if (this.websocketStatus === "CONNECTED") this.websocketStatus = "DISCONNECTED";
                 else this.websocketStatus = "DISCONNECTED";
+                $(".pluginStatusValue").text("Not connected");
+                $(".pluginStatusValue").removeClass("pluginStatusConnected pluginStatusDisconnected").addClass("pluginStatusDisconnected");
             },
             () => { console.log("init of HttpSiraStatus socket failed!"); }
         );

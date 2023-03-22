@@ -1,11 +1,73 @@
-RewriteEngine On
-Options +FollowSymlinks
+# NO CACHE ! >:( GRRRGrrGrrGr MEEEERRRRRRRRP
+<FilesMatch "\.(css|gif|html|ico|jpeg|jpg|js|png|txt|json)$">
+    <IfModule mod_expires.c>
+        ExpiresActive Off
+    </IfModule>
+    <IfModule mod_headers.c>
+            FileETag None
+            Header unset ETag
+            Header unset Pragma
+            Header unset Cache-Control
+            Header unset Last-Modified
+            Header set Pragma "no-cache"
+            Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+            Header set Expires "Thu, 1 Jan 1970 00:00:00 GMT"
+        </IfModule>
+</FilesMatch>
+
+# BUT cache enabled for the fonts, because thats never change i think (365 days of cache)
+<FilesMatch "\.(eot|ttf|woff|woff2)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=31536000, public, no-transform"
+    </IfModule>
+</FilesMatch>
+
+# Webtools says do that, so i do it ¯\_(ツ)_/¯
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+</IfModule>
+
+# Compress HTML, CSS, JavaScript, Text and fonts
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+# Can't access to the .htaccess directly
+<files .htaccess>
+    order allow,deny
+    deny from all
+</files>
+
+# No indexed foldes/files
 Options -Indexes
+Options +FollowSymlinks
+
+# Rewriting URLs
+RewriteEngine On
 RewriteBase /
 
-#Modification de l'URL pour éviter l'erreur 404 et pour rediriger vers la bonne route
+# If the Files exists
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
+
+# Now URLs following index.php files and / or ? can be used
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]

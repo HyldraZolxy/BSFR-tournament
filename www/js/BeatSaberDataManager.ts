@@ -29,6 +29,34 @@ export interface BeatSaverSongJSON {
         }];
     }];
 }
+export interface mapsSong {
+    title       : string;
+    subtitle    : string;
+    author      : string;
+    mapper      : string;
+    cover       : string;
+    songLength  : number;
+    songBeatSaverLength: number;
+    songSpeed   : number;
+    bpm         : number;
+    totalNotes  : number;
+
+    hashMap     : string;
+    bsrKey      : string;
+
+    difficulty  : string;
+    ranked      : boolean;
+    qualified   : boolean;
+}
+export interface playerPerformance {
+    score           : number;
+    accuracy        : number;
+    combo           : number;
+    miss            : number;
+    health          : number;
+    notesPassed     : number;
+    paused          : number;
+}
 
 export class BeatSaberDataManager {
 
@@ -146,7 +174,7 @@ export class BeatSaberDataManager {
                 performance: this.playerPerformance
             };
 
-            this._data.sendData(data);
+            this._data.sendData(data, this.mapsSong, this.playerPerformance);
         }
     }
     private async getSongDetails(songHash: string): Promise<BeatSaverSongJSON> {
