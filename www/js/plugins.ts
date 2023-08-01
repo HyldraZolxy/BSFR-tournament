@@ -1,5 +1,5 @@
-import { WebSocketManager }     from './websocket-manager';
-import { HTTPSiraStatus }     from "./HTTPSiraStatus";
+import { WebSocketManager } from './websocket-manager';
+import { HTTPSiraStatus }   from "./HTTPSiraStatus";
 
 export class Plugins {
 
@@ -34,28 +34,42 @@ export class Plugins {
     ////////////////////
     public async connection(): Promise<void> {
         this.websocketVersion++;
+        let connectionTry = 0;
+
+        const infoGrabber       = $(".infoGrabber");
+        const infoGrabberStatus = $(".infoGrabberStatus");
+
+
+        infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Connecting...");
+        infoGrabberStatus.text("Non connecté");
 
         this._websocketManager.add("HttpSiraStatus" + this.websocketVersion, "ws://127.0.0.1:6557/socket",
             (data) => { this._httpSiraStatus.dataParser(data); },
             () => {
+                infoGrabber.text("<i class=\"fa-solid fa-circle-info\"></i> Connecté");
                 console.log("socket initialized on HttpSiraStatus!");
                 this.websocketStatus = "CONNECTED";
-                $(".pluginStatusValue").text("Connected");
-                $(".pluginStatusValue").removeClass("pluginStatusDisconnected pluginStatusConnected").addClass("pluginStatusConnected");
+                infoGrabberStatus.text("Connecté");
             },
             () => {
+                if (connectionTry < 2) infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Déconnecté...");
+                else                   infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Déconnecté, HTTPSiraStatus/WebSocketSharp est bien installé ?");
+
                 if (this.websocketStatus === "CONNECTED") this.websocketStatus = "DISCONNECTED";
                 else this.websocketStatus = "DISCONNECTED";
-                $(".pluginStatusValue").text("Not connected");
-                $(".pluginStatusValue").removeClass("pluginStatusConnected pluginStatusDisconnected").addClass("pluginStatusDisconnected");
+                infoGrabberStatus.text("Non connecté");
+
+                connectionTry++;
             },
-            () => { console.log("init of HttpSiraStatus socket failed!"); }
+            () => {
+                console.log("init of HttpSiraStatus socket failed!");
+            }
         );
     }
 
     public removeConnection(): Promise<unknown> {
         return new Promise(resolve => {
-            this._websocketManager.remove("BSPlus" + this.websocketVersion);
+            this._websocketManager.remove("HttpSiraStatus" + this.websocketVersion);
 
             setTimeout(() => resolve(""), 250);
         });

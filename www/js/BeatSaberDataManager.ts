@@ -165,12 +165,12 @@ export class BeatSaberDataManager {
     public pushData() {
         if (this.playerState === "Finish") {
             let data = {
-                hash: this.mapsSong.hashMap,
-                difficulty: this.mapsSong.difficulty,
-                totalNote: this.mapsSong.totalNotes,
-                songLength: ((this.mapsSong.songLength - this.mapsSong.songBeatSaverLength) < 1000 && (this.mapsSong.songLength - this.mapsSong.songBeatSaverLength) > -1000),
+                hash:        this.mapsSong.hashMap,
+                difficulty:  this.mapsSong.difficulty,
+                totalNote:   this.mapsSong.totalNotes,
+                songLength:  ((this.mapsSong.songLength - this.mapsSong.songBeatSaverLength) < 1000 && (this.mapsSong.songLength - this.mapsSong.songBeatSaverLength) > -1000),
                 playerState: this.playerState,
-                modifiers: this.mapsModifier,
+                modifiers:   this.mapsModifier,
                 performance: this.playerPerformance
             };
 

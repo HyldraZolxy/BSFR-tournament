@@ -16,6 +16,6 @@ export class Tools {
             headers: options,
             body: JSON.stringify(parameters)
         })
-        .then(response => response.text());
+        .then(response => response.json());
     }
 }

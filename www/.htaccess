@@ -15,8 +15,8 @@
         </IfModule>
 </FilesMatch>
 
-# BUT cache enabled for the fonts, because thats never change i think (365 days of cache)
-<FilesMatch "\.(eot|ttf|woff|woff2)$">
+# BUT cache enabled for the fonts and background video, because thats never change i think (365 days of cache)
+<FilesMatch "\.(eot|ttf|woff|woff2|mp4|webm)$">
     <IfModule mod_headers.c>
         Header set Cache-Control "max-age=31536000, public, no-transform"
     </IfModule>
@@ -64,10 +64,7 @@ RewriteEngine On
 RewriteBase /
 
 # If the Files exists
-RewriteCond %{REQUEST_FILENAME} -s [OR]
-RewriteCond %{REQUEST_FILENAME} -l [OR]
-RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME} !-f
 
 # Now URLs following index.php files and / or ? can be used
-RewriteRule ^.*$ - [NC,L]
-RewriteRule ^.*$ index.php [NC,L]
+RewriteRule ^(.*)$ index.php?args=$1 [QSA,L]

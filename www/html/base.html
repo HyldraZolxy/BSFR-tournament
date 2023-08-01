@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <script>
+            // Catching performance of Internet connection
+            window.timeStamp = performance.now();
+        </script>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{{PAGE_TITLE}} - D-Tier team</title>
+        <meta name="description" content="Site web pour la team D-Tier France pour les tournois lié à Beat Saber">
+
+        <meta property="og:site_name"   content="D-Tier team" />
+        <meta property="og:title"       content="D-Tier team | Site web pour la team France" />
+        <meta property="og:type"        content="website" />
+        <meta property="og:url"         content="http://bsfr-tournament.hyldrazolxy.fr/" />
+        <meta property="og:image"       content="http://bsfr-tournament.hyldrazolxy.fr/pictures/logo/dtier-logo.png" />
+        <meta property="og:description" content="Site web pour la team D-Tier France pour les tournois lié à Beat Saber" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/pictures/favicon/apple-touch-icon.png">
+        <link rel="icon"             type="image/png" sizes="32x32"   href="/pictures/favicon/favicon-32x32.png">
+        <link rel="icon"             type="image/png" sizes="16x16"   href="/pictures/favicon/favicon-16x16.png">
+
+        <link rel="preload stylesheet" as="style" href="/css/global.style.css"       type="text/css" />
+        <link rel="preload stylesheet" as="style" href="/css/nav.style.css"          type="text/css" />
+        <link rel="preload stylesheet" as="style" href="/css/index.style.css"        type="text/css" />
+        <link rel="preload stylesheet" as="style" href="/css/footer.style.css"       type="text/css" />
+        <link rel="preload stylesheet" as="style" href="/css/page-content.style.css" type="text/css" />
+
+        <script src="https://kit.fontawesome.com/f88fd0421a.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="full-device">
+        {{PAGE_BACKGROUND}}
+
+        {{NAV_MOBILE}}
+
+        <div class="wrapper header flex flex-spaced flex-align-center">
+            <div class="header-logo">
+                <a href="/">
+                    <img class="logo" src="/pictures/logo/dtier-logo.png" alt="D-Tier team logo" />
+                </a>
+            </div>
+            <a href="#" class="header-top-mobile-btn btn btn-light-v_light-hover" onclick="mobileNavOpen()" title="open button for mobile navigation">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+            {{NAV_PC}}
+        </div>
+
+        {{PAGE_CONTENT}}
+
+        <footer class="wrapper footer-container flex flex-spaced flex-align-center">
+            {{NAV_FOOTER}}
+            <div class="flex flex-row flex-align-center">
+                <div>
+                    <p>Developed by <a href="https://www.hyldrazolxy.fr/" target="_blank" class="link-default-color">Hyldra Zolxy</a></p>
+                    <p>All right reserved - 2023</p>
+                </div>
+                <img class="logo" src="/pictures/logo/hyldra-logo.png" alt="Hyldra Zolxy logo" />
+            </div>
+        </footer>
+
+        <script src="/js/global.script.js"></script>
+    </body>
+</html>

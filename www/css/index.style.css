@@ -1,0 +1,17 @@
+.hero-container {
+    max-width:  var(--size-page-width);
+    min-height: var(--size-content-height-min);
+    height:     var(--size-content-height);
+    padding:    var(--size-page-padding);
+
+    z-index: 10;
+}
+.hero-container p {
+    font-size: 1em;
+}
+
+@media (min-width: 800px) and (min-height: 470px) {
+    .hero-container p {
+        font-size: 1.55em;
+    }
+}

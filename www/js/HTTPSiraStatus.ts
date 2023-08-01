@@ -133,6 +133,10 @@ interface I_http_Sira_StatusObject {
 
 export class HTTPSiraStatus extends BeatSaberDataManager {
 
+    private infoGrabber            = $(".infoGrabber");
+    private infoGrabberStatus      = $(".infoGrabberStatus");
+    private infoGrabberInteraction = $(".infoGrabberInteraction");
+
     /////////////////////
     // Private Methods //
     /////////////////////
@@ -151,6 +155,9 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
                 this.gameState      = "Menu";
                 this.playerState    = "None";
 
+                this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Waiting for a song to start...");
+                this.infoGrabberInteraction.text("");
+
                 if (dataEvent.status.beatmap !== null) {
                     this.mapInfoParser(dataEvent);
 
@@ -158,10 +165,14 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
                         if (dataEvent.status.beatmap.start !== null) this.mapsPerformance.actualSongTime = dataEvent.status.beatmap.paused - dataEvent.status.beatmap.start;
 
                         this.gameState = "Paused";
+
+                        this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Paused");
                     } else {
                         if (dataEvent.status.beatmap.start !== null) this.mapsPerformance.actualSongTime = dataEvent.time - dataEvent.status.beatmap.start;
 
                         this.gameState = "Playing";
+
+                        this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Playing");
                     }
 
                     this.scoreParser(dataEvent);
@@ -173,6 +184,8 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
                 this.gameState      = "Playing";
                 this.playerState    = "None";
 
+                this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Playing");
+
                 this.mapInfoParser(dataEvent);
 
                 console.log("Playing: " + this.playerState + "\n\n");
@@ -181,10 +194,14 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
             case "pause":
                 this.gameState = "Paused";
                 this.playerPerformance.paused++;
+
+                this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Paused");
                 break;
 
             case "resume":
                 this.gameState = "Playing";
+
+                this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Playing");
                 break;
 
             case "finished":
@@ -197,6 +214,8 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
 
             case "menu":
                 this.gameState      = "Menu";
+
+                this.infoGrabber.html("<i class=\"fa-solid fa-circle-info\"></i> Waiting for a song to start...");
 
                 console.log("Menu: " + this.playerState);
 
@@ -253,6 +272,9 @@ export class HTTPSiraStatus extends BeatSaberDataManager {
 
         console.log("Hash maps: " + <string>dataEvent.status.beatmap?.songHash);
         this.songDetails(<string>dataEvent.status.beatmap?.songHash);
+
+        this.infoGrabberInteraction.removeClass("text-glow-cyan text-green text-red text-orange");
+        this.infoGrabberInteraction.html("<i class=\"fa-solid fa-music\"></i> Actually playing: " + this.mapsSong.author + " - " + this.mapsSong.title);
     }
     private scoreParser(dataEvent: I_http_Sira_StatusObject): void {
         if (dataEvent.status.performance?.currentSongTime !== undefined) this.mapsPerformance.actualSongTime = <number>dataEvent.status.performance?.currentSongTime * 1000;

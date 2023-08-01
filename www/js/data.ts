@@ -3,11 +3,8 @@ import { mapsSong, playerPerformance } from "./BeatSaberDataManager";
 
 interface mapsJSON {
     id          : number;
-    mapID       : string;
-    mapKey      : string;
+    hash        : string;
     difficulty  : string;
-    poolID      : number;
-    mapStyle    : string;
 }
 interface dataGrabbed {
     hash: string;
@@ -42,6 +39,7 @@ interface dataGrabbed {
 }
 interface dataJSON {
     error : string;
+    warning: string;
     success: string;
 }
 
@@ -59,65 +57,105 @@ export class Data {
 
     public maps!: mapsJSON[];
     public mapsHash: Array<string> = [];
-    public pool = 1;
+    public tournamentID = 4;
+    public poolID = 7;
+    public mapID = 0;
+
+    private infoGrabberInteraction = $(".infoGrabberInteraction");
 
     constructor() {
         this._tools = new Tools();
 
-        this.getMaps(this.pool);
+        this.getMaps(this.tournamentID, this.poolID);
     }
 
     public async sendData(data: dataGrabbed, mapInformation: mapsSong, playerPerformance: playerPerformance) {
-        if (this.mapsHash.includes(data.hash.toUpperCase())) {
-            this.createMapsCard(mapInformation, playerPerformance);
 
-            let dataJson = await this._tools.postMethod("/api/setScores", data);
+        this.infoGrabberInteraction.removeClass("text-glow-cyan text-green text-red text-orange");
+
+        if (this.mapsHash.includes(data.hash.toUpperCase())) {
+            this.infoGrabberInteraction.html("<i class=\"fa-solid fa-magnifying-glass-chart\"></i> Analysing: " + mapInformation.author + " - " + mapInformation.title);
+            this.infoGrabberInteraction.addClass("text-glow-cyan");
+
+            this.createMapsCard(mapInformation);
+
+            await this.getMapID(data.hash);
+
+            const formData = {
+                tournamentID: this.tournamentID,
+                poolID: this.poolID,
+                mapID: this.mapID,
+                data: data
+            };
+
+            let dataJson = await this._tools.postMethod("/api/setScore", formData);
 
             console.log(dataJson);
 
-            dataJson = JSON.parse(dataJson);
+            setTimeout(() => {
+                if (dataJson.error !== undefined) {
+                    this.infoGrabberInteraction.removeClass("text-glow-cyan text-green text-red text-orange");
+                    this.infoGrabberInteraction.html("<i class=\"fa-regular fa-circle-xmark\"></i> Fail: " + mapInformation.author + " - " + mapInformation.title);
+                    this.infoGrabberInteraction.addClass("text-red");
 
-            if (dataJson.error !== undefined) {
-                let elementMapCardLast = $(".mapContainer").last();
-                let elementMapStatusUpload = elementMapCardLast.find(".mapStatusUpload");
+                    $(".pass .grabberSong").last().find(".infoAPI")
+                        .html("<i class=\"fa-regular fa-circle-xmark\"></i> Fail: " + dataJson.error)
+                        .removeClass("text-glow-cyan text-green text-red text-orange")
+                        .addClass("text-red");
+                }
+                if (dataJson.warning !== undefined) {
+                    this.infoGrabberInteraction.removeClass("text-glow-cyan text-green text-red text-orange");
+                    this.infoGrabberInteraction.html("<i class=\"fa-solid fa-circle-exclamation\"></i> Warning: " + mapInformation.author + " - " + mapInformation.title);
+                    this.infoGrabberInteraction.addClass("text-orange");
 
-                elementMapStatusUpload.removeClass("mapStatusUploadProgress mapStatusUploadNotOk mapStatusUploadOk");
-                elementMapStatusUpload.addClass("mapStatusUploadNotOk");
-                elementMapStatusUpload.text(dataJson.error);
-            }
+                    $(".pass .grabberSong").last().find(".infoAPI")
+                        .html("<i class=\"fa-solid fa-circle-exclamation\"></i> Warning: " + dataJson.warning)
+                        .removeClass("text-glow-cyan text-green text-red text-orange")
+                        .addClass("text-orange");
+                }
+                if (dataJson.success !== undefined) {
+                    this.infoGrabberInteraction.removeClass("text-glow-cyan text-green text-red text-orange");
+                    this.infoGrabberInteraction.html("<i class=\"fa-regular fa-circle-check\"></i> Success: " + mapInformation.author + " - " + mapInformation.title);
+                    this.infoGrabberInteraction.addClass("text-green");
 
-            if (dataJson.success !== undefined) {
-                let elementMapCardLast = $(".mapContainer").last();
-                let elementMapStatusUpload = elementMapCardLast.find(".mapStatusUpload");
-
-                elementMapStatusUpload.removeClass("mapStatusUploadProgress mapStatusUploadNotOk mapStatusUploadOk");
-                elementMapStatusUpload.addClass("mapStatusUploadOk");
-                elementMapStatusUpload.text(dataJson.success);
-            }
+                    $(".pass .grabberSong").last().find(".infoAPI")
+                        .html("<i class=\"fa-regular fa-circle-check\"></i> Success: " + dataJson.success)
+                        .removeClass("text-glow-cyan text-green text-red text-orange")
+                        .addClass("text-green");
+                }
+            }, 1000);
         }
     }
-    private async getMaps(pool: number) {
-        this.maps = await this._tools.getMethod("/api/getMaps/" + pool);
+    private async getMaps(tournament: number, pool: number) {
+        this.maps = await this._tools.getMethod("/api/getMaps/" + tournament + "/" + pool);
 
         for (let i = 0; i < this.maps.length; i++) {
-            this.mapsHash.push(this.maps[i].mapID.toUpperCase());
+            this.mapsHash.push(this.maps[i].hash.toUpperCase());
+        }
+    }
+    private async getMapID(hash: string) {
+        for (let i = 0; i < this.maps.length; i++) {
+            if (this.maps[i].hash.toUpperCase() === hash.toUpperCase()) {
+                this.mapID = this.maps[i].id;
+            }
         }
     }
 
-    private createMapsCard(mapInformation: mapsSong, playerPerformance: playerPerformance) {
-        let elementStatus = $("#mainContent");
+    private createMapsCard(mapInformation: mapsSong) {
+        const infoGrabberMaps = $(".pass");
 
-        elementStatus.append(   '<div class="mapContainer">' +
-                                    '<img class="mapCover" src="' + mapInformation.cover + '" alt="cover map" />' +
-                                    '<p class="mapTitle">' + mapInformation.title + '</p>' +
-                                    '<div class="mapPerformance">' +
-                                        '<p class="mapPerformanceScore">' + playerPerformance.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</p>' +
-                                        '<p class="mapPerformanceAccuracy">' + Number(Math.floor(playerPerformance.accuracy * 100).toFixed(2)) + '%</p>' +
-                                        '<p class="mapPerformanceMiss">' + playerPerformance.miss + '</p>' +
-                                        '<p class="mapPerformanceNotes">' + playerPerformance.notesPassed + '/' + mapInformation.totalNotes + '</p>' +
-                                    '</div>' +
-                                    '<p class="mapStatusUpload mapStatusUploadProgress">En cours de vérification</p>' +
-                                '</div>');
+        infoGrabberMaps.append("<div class=\"wrapper grabberSong\">" +
+                "                <div class=\"collapsible-background\">" +
+                "                    <img src=\""+ mapInformation.cover + "\"  alt=\"cover song\"/>" +
+                "                </div>" +
+                "                <div class=\"collapsible-content\">" +
+                "                    <p class=\"collapsible-content-title\">" + mapInformation.author + "</p>" +
+                "                    <div class=\"collapsible-content-information flex flex-column flex-spaced\">" +
+                "                        <p class=\"flex-grow2 text-left text-cut\">" + mapInformation.title + "</p>" +
+                "                        <p class=\"infoAPI text-left text-cut\"></p>" +
+                "                    </div>" +
+                "                </div>" +
+                "            </div>");
     }
 
     /////////////

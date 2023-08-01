@@ -1,0 +1,138 @@
+SQL ADD:
+
+    String $table      = Le nom de la table
+    Array  $parameters = Les paramètres à ajouter
+                         Key in String, Value not in Array
+
+    Exemple:
+    $table = "users";
+    $parameters = array(
+        "username" => "John",
+        "password" => "Doe"
+    );
+
+    sqlAdd($table, $parameters);
+
+
+SQL DELETE:
+
+    String $table = Le nom de la table
+    Array  $where = Tout les paramètres à supprimer ainsi que leur valeur, leur opérateur et l'opérateur entre les paramètres
+           Array =>
+                String|Array "value"    => La valeur du paramètre
+                String       "operator" => L'opérateur du paramètre
+                String       "between"  => L'opérateur entre les paramètres (OPTIONNEL SI UNE SEULE CONDITION)
+
+    Exemple:
+    $table = "users";
+    $where = array(
+        "username" => array(
+            "value" => "John",
+            "operator" => "=",
+            "between" => "AND"
+        ),
+        "password" => array(
+            "value" => "Doe",
+            "operator" => "=",
+            "between" => "OR"
+        ),
+        "email" => array(
+            "value" => array("test@hotmail.fr", "test@gmail.com", "test@yahoo.com"),
+            "operator" => "IN"
+        )
+    );
+
+    sqlDelete($table, $where);
+
+
+SQL UPDATE:
+
+    String $table = Le nom de la table
+    Array  $parameters = Les paramètres à modifier
+                         KEY AND VALUE ONLY STRING
+    Array  $where = Tout les paramètres à modifier ainsi que leur valeur, leur opérateur et l'opérateur entre les paramètres
+           Array =>
+                String|Array "value"    => La valeur du paramètre
+                String       "operator" => L'opérateur du paramètre
+                String       "between"  => L'opérateur entre les paramètres (OPTIONNEL SI UNE SEULE CONDITION)
+
+    Exemple:
+    $table = "users";
+    $parameters = array(
+        "username" => "John",
+        "password" => "Doe"
+    );
+    $where = array(
+        "username" => array(
+            "value" => "Doe",
+            "operator" => "=",
+            "between" => "AND"
+        ),
+        "password" => array(
+            "value" => "Doe",
+            "operator" => "=",
+            "between" => "OR"
+        ),
+        "email" => array(
+            "value" => array("test@hotmail.fr", "test@gmail.com", "test@yahoo.com"),
+            "operator" => "IN"
+        )
+    );
+
+    sqlUpdate($table, $parameters, $where);
+
+SQL SELECT:
+
+    String $table = Le nom de la table
+    Array  $column = Les colonnes à sélectionner
+    Array  $joins = Les tables à joindre
+           Array =>
+                String "table" => La table à joindre
+                String "on"    => La condition de jointure
+    Array  $where = Tout les paramètres à modifier ainsi que leur valeur, leur opérateur et l'opérateur entre les paramètres
+           Array =>
+                String|Array "value"    => La valeur du paramètre
+                String       "operator" => L'opérateur du paramètre
+                String       "between"  => L'opérateur entre les paramètres (OPTIONNEL SI UNE SEULE CONDITION)
+    Array  $order = Les colonnes à ordonner
+            Array =>
+                  String "column" => La colonne à ordonner
+                  String "order"  => L'ordre de la colonne (ASC ou DESC)
+    Array  $limit = Le nombre de résultat à retourner
+            Array => String Le début de la limite, String La fin de la limite
+
+    Exemple:
+    $table = "users";
+    $column = array(
+        "username",
+        "password"
+    );
+    $joins = array(
+        "tableName" => array(
+            "table" => "tableName tn",
+            "on"    => "tn.column = u.column"
+        )
+    );
+    $where = array(
+        "username" => array(
+            "value" => "Doe",
+            "operator" => "=",
+            "between" => "AND"
+        ),
+        "password" => array(
+            "value" => "Doe",
+            "operator" => "=",
+            "between" => "OR"
+        ),
+        "email" => array(
+            "value" => array("test@hotmail.fr", "test@gmail.com", "test@yahoo.com"),
+            "operator" => "IN"
+        )
+    );
+    $order = array(
+        "pseudo" => "ASC",
+        "discordID" => "DESC"
+    );
+    $limit = array("0", "2");
+
+    sqlSelect($table, $column, $where, $order, $limit, $joins);

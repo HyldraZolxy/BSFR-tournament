@@ -1,58 +1,100 @@
 <?php
 namespace hyldxycore\system;
-use extensions\login\Login;
-use extensions\qualification\DTierQualification;
-use extensions\api\Api;
-use extensions\grabber\Grabber;
+
+use Exception;
+use hyldxycore\system\backSystem\router\Router;
 
 class Application {
-    protected string $_url;
-
     static private ?Application $_instance = null;
+           private Router       $_router;
 
-    private Template $_template;
-    private Login $_login;
-    private DTierQualification $_DTierQualification;
-    private Api $_api;
-    private Grabber $_grabber;
-
+    /**
+     * @throws Exception
+     */
     public function __construct() {
-        $this->_template = new Template();
-        $this->_login = new Login();
-        $this->_DTierQualification = new DTierQualification();
-        $this->_api = Api::getInstance();
-        $this->_grabber = new Grabber();
-    }
+        $this->_router = new Router($_GET["args"]);
 
-    private function getURL(): false|string {
-        if (isset($_SERVER["REQUEST_URI"])) $this->_url = $_SERVER["REQUEST_URI"];
+       /**************
+        Add Routes
+        **************/
+        /** home */
+        $this->_router->addRoute(
+            "/",
+            "hyldxycore\\system\\frontSystem\\HomeController@index"
+        );
 
-        $URIExploded = explode("/", parse_url($this->_url, PHP_URL_PATH));
+        /** Tournament */
+        $this->_router->addRoute(
+            "/tournament/:id",
+            "extensions\\tournament\\TournamentController@tournament"
+        )->with("id", "[0-9]+");
+        $this->_router->addRoute(
+            "/tournaments",
+            "extensions\\tournament\\TournamentController@tournaments"
+        );
 
-        $page = match ($URIExploded[1]) {
-            "login" => $this->_login->login(),
-            "logout" => $this->_login->endSession(),
-            "DTierQualification" => $this->_DTierQualification->send(),
-            "api" => $this->_api->runAPI((isset($URIExploded[2])) ? $URIExploded[2] : ""),
-            "grabber" => $this->_grabber->send(),
-            default => file_get_contents(join(DS, array(WWW, "html", "index.html")))
-        };
+        /** Pool */
+        $this->_router->addRoute(
+            "/tournament/:tournamentID/pool/:poolID",
+            "extensions\\pool\\PoolController@pool"
+        )->with("tournamentID", "[0-9]+")->with("poolID", "[0-9]+");
 
-        $page = $this->_template->replaceLoginButton($page);
-        $page = $this->_template->replaceLoginLink($page);
-        $page = $this->_template->replaceNavContentLink($page, parse_url($this->_url, PHP_URL_PATH));
-        $page = $this->_template->replaceNavContent($page, substr(parse_url($this->_url, PHP_URL_PATH), 1));
+        /** Tools */
+        $this->_router->addRoute(
+            "/tools",
+            "extensions\\tools\\ToolsController@index"
+        );
 
-        return $this->_template->cleanBalises($page);
+        /** Grabber */
+        $this->_router->addRoute(
+            "/grabber",
+            "extensions\\grabber\\GrabberController@index"
+        );
+
+        /** Login */
+        $this->_router->addRoute(
+            "/login",
+            "extensions\\login\\LoginController@login"
+        );
+        $this->_router->addRoute(
+            "/logout",
+            "extensions\\login\\LoginController@endSession"
+        );
+
+        /** API */
+        $this->_router->addRoute(
+            "/api/getMaps/:tournamentID/:poolID",
+            "extensions\\api\\ApiController@getPoolMaps"
+        )->with("tournamentID", "[0-9]+")->with("poolID", "[0-9]+");
+        $this->_router->addRoute(
+            "/api/setScore/",
+            "extensions\\api\\ApiController@setScore"
+        );
+
+        /** Cron */
+        $this->_router->addRoute(
+            "/cron",
+            "extensions\\cron\\CronController@index"
+        );
+
+        /*********************
+         Add Errors Routes
+         *********************/
+        $this->_router->addErrorRoute(
+            "/",
+            "hyldxycore\\system\\frontSystem\\ErrorController@notFound"
+        );
+        $this->_router->addErrorRoute(
+            "/api",
+            "extensions\\api\\ApiController@error"
+        );
+
+        echo $this->_router->dispatch();
     }
 
     static public function getInstance(): ?Application {
         if (is_null(self::$_instance)) self::$_instance = new self();
 
         return self::$_instance;
-    }
-
-    public function run(): bool|string {
-        return $this->getURL();
     }
 }
